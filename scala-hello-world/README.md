@@ -15,7 +15,7 @@ Note, if you don't see this green arrow or running the App doesn't work. Check t
 
 ## Challenge #2: Implement code in each ChallengeProblems.scala to pass the tests
 
-In the /test/scala/com.labs1904.hwe/exercises/ChallengeTests package, you'll find 
+In the /exercises/ChallengeTests package, you'll find 
 tests for every challenge in ChallengeProblems.scala. Implement code with passing tests before
 moving on to the next challenge. There are 12 challenges total. 
 

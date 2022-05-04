@@ -22,6 +22,15 @@ class StretchProblemsTests extends FunSpec {
 
       assert(actual === expected)
     }
+
+    it("Returns true for 'racecar'") {
+      val input = "racecar"
+      val expected = true
+
+      val actual = StretchProblems.isPalindrome(input)
+
+      assert(actual === expected)
+    }
   }
   describe("Testing NextBiggestNumber - Working with numbers, strings, and lists") {
     it("should return the next biggest number for straightforward examples") {

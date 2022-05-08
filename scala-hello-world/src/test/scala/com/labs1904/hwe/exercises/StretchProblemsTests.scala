@@ -32,6 +32,82 @@ class StretchProblemsTests extends FunSpec {
       assert(actual === expected)
     }
   }
+  describe("Testing determineSwapOneValueAndIndex") {
+    it("should work for 54998") {
+      assert(StretchProblems.determineSwapOneValueAndIndex(54998.toString.split("")) === (4, 1))
+    }
+    it("should work for 45071") {
+      assert(StretchProblems.determineSwapOneValueAndIndex(45071.toString.split("")) === (0, 2))
+    }
+    it("should work for 31233") {
+      assert(StretchProblems.determineSwapOneValueAndIndex(31233.toString.split("")) === (2, 2))
+    }
+    it("should work for 22437") {
+      assert(StretchProblems.determineSwapOneValueAndIndex(22437.toString.split("")) === (3, 3))
+    }
+    it("should work for straightforward examples") {
+      assert(StretchProblems.determineSwapOneValueAndIndex(12.toString.split("")) === (1, 0))
+      assert(StretchProblems.determineSwapOneValueAndIndex(123.toString.split("")) === (2, 1))
+      assert(StretchProblems.determineSwapOneValueAndIndex(67809.toString.split("")) === (0, 3))
+    }
+
+    it("should return -1 for straightforward examples") {
+      assert(StretchProblems.determineSwapOneValueAndIndex(21.toString.split("")) === (-1, -1))
+      assert(StretchProblems.determineSwapOneValueAndIndex(54321.toString.split("")) === (-1, -1))
+    }
+  }
+  describe("Testing determineSwapTwoValueAndIndex") {
+    it("should work for 54998") {
+      assert(StretchProblems.determineSwapTwoValueAndIndex(54998.toString.split("")) === (8, 4))
+    }
+    it("should work for 45071") {
+      assert(StretchProblems.determineSwapTwoValueAndIndex(45071.toString.split("")) === (1, 4))
+    }
+    it("should work for 31233") {
+      assert(StretchProblems.determineSwapTwoValueAndIndex(31233.toString.split("")) === (3, 3))
+    }
+    it("should work for 22437") {
+      assert(StretchProblems.determineSwapTwoValueAndIndex(22437.toString.split("")) === (7, 4))
+    }
+    it("should work for straightforward examples") {
+      assert(StretchProblems.determineSwapTwoValueAndIndex(12.toString.split("")) === (2, 1))
+      assert(StretchProblems.determineSwapTwoValueAndIndex(123.toString.split("")) === (3, 2))
+      assert(StretchProblems.determineSwapTwoValueAndIndex(67809.toString.split("")) === (9, 4))
+    }
+
+    it("should return -1 for straightforward examples") {
+      assert(StretchProblems.determineSwapOneValueAndIndex(21.toString.split("")) === (-1, -1))
+      assert(StretchProblems.determineSwapOneValueAndIndex(54321.toString.split("")) === (-1, -1))
+    }
+  }
+  describe("Testing swapValuesByIndex") {
+    it("should work for 54998") {
+      assert(StretchProblems.swapValuesByIndex(1, 4, 54998.toString.split("")) === 58994.toString.split(""))
+    }
+    it("should work for 45071") {
+      assert(StretchProblems.swapValuesByIndex(2, 4, 45071.toString.split("")) === 45170.toString.split(""))
+    }
+    it("should work for 31233") {
+      assert(StretchProblems.swapValuesByIndex(2, 3, 31233.toString.split("")) === 31323.toString.split(""))
+    }
+    it("should work for 22437") {
+      assert(StretchProblems.swapValuesByIndex(4, 3, 22437.toString.split("")) === 22473.toString.split(""))
+    }
+  }
+  describe("Testing splitAndReorder") {
+    it("should work for 54998") {
+      assert(StretchProblems.splitAndReorder(1, 58994.toString.split("")) === 58499.toString.split(""))
+    }
+    it("should work for 45071") {
+      assert(StretchProblems.splitAndReorder(2, 45170.toString.split("")) === 45107.toString.split(""))
+    }
+    it("should work for 31233") {
+      assert(StretchProblems.splitAndReorder(2, 31323.toString.split("")) === 31323.toString.split(""))
+    }
+    it("should work for 22437") {
+      assert(StretchProblems.splitAndReorder(4, 22473.toString.split("")) === 22473.toString.split(""))
+    }
+  }
   describe("Testing NextBiggestNumber - Working with numbers, strings, and lists") {
     it("should return the next biggest number for straightforward examples") {
       assert(StretchProblems.getNextBiggestNumber(12) === 21)

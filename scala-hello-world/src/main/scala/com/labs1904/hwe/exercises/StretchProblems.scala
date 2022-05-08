@@ -18,49 +18,90 @@ For a given number, return the next largest number that can be created by rearra
 If no larger number can be created, return -1
  */
   def getNextBiggestNumber(theInt: Integer): Int = {
+    // I've been close on this problem a couple of times, I want to give it another shot
+    // part of the issue with this problem is the multiple step process
+    // I think breaking the problem down into smaller functions (that are tested) will help tremendously
 
-    // reverse array
-    val numAsStringArray = theInt.toString.split("").reverse
-    // determine swap target one index and value from left to right
-    var i = 0;
-    var swapTargetOneIndex = -1
-    var swapTargetOneValue = -1
-    var swapTargetTwoIndex = -1
-    var swapTargetTwoValue = -1
-    var notIdentified = true;
-    while (i < numAsStringArray.length - 1 && notIdentified) {
-      if (numAsStringArray(i).toInt > numAsStringArray(i + 1).toInt) {
-        swapTargetOneIndex = i
-        swapTargetOneValue = numAsStringArray(i).toInt
-        notIdentified = false
-        swapTargetTwoIndex = i + 1;
-        swapTargetTwoValue = numAsStringArray(i+1).toInt
-      }
-      i += 1
-    }
-    if (swapTargetOneIndex == -1) {
+    // Step Zero: covert Int into StringArray
+    val numAsStringArray = theInt.toString.split("")
+    // Step One: determine swap one value and index
+    val (swapOneValue, swapOneIndex) = determineSwapOneValueAndIndex(numAsStringArray)
+
+    if (swapOneIndex == -1) {
       return -1
     }
-    // determine swap target two index and value of remaining values to the right of swap target one index
-    while (i < numAsStringArray.length - 1) {
-      if (numAsStringArray(i).toInt > swapTargetOneValue && numAsStringArray(i).toInt < swapTargetTwoValue ) {
-        swapTargetTwoValue = numAsStringArray(i).toInt
-        swapTargetTwoIndex = i
+    // Step Two: determine swap two value and index
+    val (swapTwoValue, swapTwoIndex) = determineSwapTwoValueAndIndex(numAsStringArray)
+    // Step Three: make swap
+    val newArray = swapValuesByIndex(swapOneIndex, swapTwoIndex, numAsStringArray)
+
+    // Step Four: split array on swap position: hold and reOrder
+    val finalArray = splitAndReorder(swapOneIndex, numAsStringArray)
+    // Step Five: reorder the reOrder array from largest to smallest
+
+    // Step Six: rebuild the array & return
+    finalArray.mkString.toInt
+  }
+
+  def determineSwapOneValueAndIndex(numStringArray: Array[String]): (Int, Int) = {
+    var theValue = -1
+    var theIndex = -1
+    var i = numStringArray.length - 2
+    var notIdentified = true
+    while (i >= 0 && notIdentified) {
+      if (numStringArray(i + 1).toInt > numStringArray(i).toInt) {
+        theValue = numStringArray(i).toInt
+        theIndex = i
+        notIdentified = false
+      }
+      i -= 1
+    }
+    (theValue, theIndex)
+  }
+
+  def determineSwapTwoValueAndIndex(numStringArray: Array[String]): (Int, Int) = {
+    // find initial swap two value and index
+    var swapOneValue = -1
+    var swapOneIndex = -1
+    var theValue = -1
+    var theIndex = -1
+    var i = numStringArray.length - 2
+    var notIdentified = true
+    while (i >= 0 && notIdentified) {
+      if (numStringArray(i + 1).toInt > numStringArray(i).toInt) {
+        theValue = numStringArray(i + 1).toInt
+        theIndex = i + 1
+        swapOneValue = numStringArray(i).toInt
+        swapOneIndex = i
+        notIdentified = false
+      }
+      i -= 1
+    }
+    if (theIndex == -1) {
+      return (-1, -1)
+    }
+    // check that there aren't any better swap two candidates in the numbers after swapTwo position
+    i = theIndex;
+    while (i < numStringArray.length) {
+      if(numStringArray(i).toInt > swapOneValue && numStringArray(i).toInt < theValue) {
+        theValue = numStringArray(i).toInt
+        theIndex = i
       }
       i += 1
     }
-    // make swap
-    numAsStringArray(swapTargetOneIndex) = swapTargetTwoValue.toString
-    numAsStringArray(swapTargetTwoIndex) = swapTargetOneValue.toString
-    // split into two at swap target one index
-    var first = numAsStringArray.slice(0, swapTargetTwoIndex)
-    val second = numAsStringArray.slice(swapTargetTwoIndex, numAsStringArray.length)
-    // order from largest to smallest in group one
-    val first_sorted = first.sorted.reverse
-    // rebuild all the pieces and return
-    val recombined = first_sorted ++ second
-    val recombined_number = recombined.reverse.mkString.toInt
-    recombined_number
+    (theValue, theIndex)
   }
 
+  def swapValuesByIndex(indexOne: Int, indexTwo: Int, numStringArray: Array[String]): Array[String] = {
+    val tempVal = numStringArray(indexOne)
+    numStringArray(indexOne) = numStringArray(indexTwo)
+    numStringArray(indexTwo) = tempVal
+    numStringArray
+  }
+
+  def splitAndReorder(indexOne: Int, numStringArray: Array[String]): Array[String] = {
+    val (hold, reorder) = numStringArray.splitAt(indexOne + 1)
+    val reordered = reorder.sorted
+    hold ++ reordered
+  }
 }
